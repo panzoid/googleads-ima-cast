@@ -26,6 +26,8 @@ let Player = function() {
   this.context_ = cast.framework.CastReceiverContext.getInstance();
   this.playerManager_ = this.context_.getPlayerManager();
   this.mediaElement_ = document.getElementById('player').getMediaElement();
+  this.adCountdown_ = document.getElementById('adCountdown');
+  this.intervalTimer;
 
   const options = new cast.framework.CastReceiverOptions();
   // Map of namespace names to their types.
@@ -125,7 +127,7 @@ Player.prototype.initIMA_ = function() {
 Player.prototype.onAdsManagerLoaded_ = function(adsManagerLoadedEvent) {
   let adsRenderingSettings = new google.ima.AdsRenderingSettings();
   adsRenderingSettings.playAdsAfterTime = this.currentContentTime_;
-  adsRenderingSettings.uiElements = [google.ima.UiElements.AD_ATTRIBUTION, google.ima.UiElements.COUNTDOWN];
+  //adsRenderingSettings.uiElements = [google.ima.UiElements.AD_ATTRIBUTION, google.ima.UiElements.COUNTDOWN];
 
   // Get the ads manager.
   this.adsManager_ = adsManagerLoadedEvent.getAdsManager(
@@ -175,6 +177,14 @@ Player.prototype.onAdError_ = function(adErrorEvent) {
 Player.prototype.onContentPauseRequested_ = function() {
   this.currentContentTime_ = this.mediaElement_.currentTime;
   this.broadcast_('onContentPauseRequested,' + this.currentContentTime_);
+  adCountdown.style.visibility = "visible";
+  intervalTimer = setInterval(
+    function() {
+      var remainingTime = adsManager.getRemainingTime();
+      adCountdown.innerHTML =
+        'Ad: (' + parseInt(remainingTime) + ')';
+    },
+    1000);
 };
 
 /**
@@ -186,6 +196,8 @@ Player.prototype.onContentResumeRequested_ = function() {
 
   this.playerManager_.load(this.request_);
   this.seek_(this.currentContentTime_);
+  clearInterval(intervalTimer);
+  adCountdown.style.visibility = "hidden";
 };
 
 /**
