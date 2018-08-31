@@ -26,6 +26,7 @@ let Player = function() {
   this.context_ = cast.framework.CastReceiverContext.getInstance();
   this.playerManager_ = this.context_.getPlayerManager();
   this.mediaElement_ = document.getElementById('player').getMediaElement();
+  this.adCountdown = document.getElementById('adCountdown');
 
   const options = new cast.framework.CastReceiverOptions();
   // Map of namespace names to their types.
@@ -176,7 +177,6 @@ Player.prototype.onContentPauseRequested_ = function() {
   console.log(this);
   this.currentContentTime_ = this.mediaElement_.currentTime;
   this.broadcast_('onContentPauseRequested,' + this.currentContentTime_);
-  this.adCountdown = document.getElementById('adCountdown');
   this.adCountdown.style.visibility = "visible";
   this.intervalTimer = setInterval(
     function() {
