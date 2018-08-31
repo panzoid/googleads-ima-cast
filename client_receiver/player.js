@@ -27,6 +27,7 @@ let Player = function() {
   this.playerManager_ = this.context_.getPlayerManager();
   this.mediaElement_ = document.getElementById('player').getMediaElement();
   this.adCountdown = document.getElementById('adCountdown');
+  console.log(this);
 
   const options = new cast.framework.CastReceiverOptions();
   // Map of namespace names to their types.
