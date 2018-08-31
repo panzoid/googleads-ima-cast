@@ -183,9 +183,9 @@ Player.prototype.onContentPauseRequested_ = function() {
     function() {
       var remainingTime = self.adsManager_.getRemainingTime();
       self.adCountdown.innerHTML =
-        'Ad: (' + parseInt(remainingTime) + ')';
+        'Ad : (' + parseInt(remainingTime) + 's)';
     },
-    1000).bind(this);
+    300);
 };
 
 /**
