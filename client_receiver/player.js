@@ -178,10 +178,11 @@ Player.prototype.onContentPauseRequested_ = function() {
   this.currentContentTime_ = this.mediaElement_.currentTime;
   this.broadcast_('onContentPauseRequested,' + this.currentContentTime_);
   this.adCountdown.style.visibility = "visible";
+  var self = this;
   this.intervalTimer = setInterval(
     function() {
-      var remainingTime = this.adsManager_.getRemainingTime();
-      this.adCountdown.innerHTML =
+      var remainingTime = self.adsManager_.getRemainingTime();
+      self.adCountdown.innerHTML =
         'Ad: (' + parseInt(remainingTime) + ')';
     },
     1000);
