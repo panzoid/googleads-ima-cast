@@ -12,6 +12,7 @@ video {
 #adCountdown {
   visibility: hidden;
   color: white;
+  font-size: large;
   left: 10%;
   bottom: 10%;
   position: absolute;
