@@ -36,6 +36,7 @@ let Player = function() {
   this.context_.start(options);
 
   this.setupCallbacks_();
+  this.initIMA_();
 };
 
 /**
@@ -80,7 +81,7 @@ Player.prototype.setupCallbacks_ = function() {
       cast.framework.messages.MessageType.LOAD,
       (request) => {
         if (!this.request_) {
-          self.initIMA_();
+          //self.initIMA_();
         }
         this.request_ = request;
         this.playerManager_.pause();
@@ -126,7 +127,7 @@ Player.prototype.initIMA_ = function() {
 Player.prototype.onAdsManagerLoaded_ = function(adsManagerLoadedEvent) {
   let adsRenderingSettings = new google.ima.AdsRenderingSettings();
   adsRenderingSettings.playAdsAfterTime = this.currentContentTime_;
-  //adsRenderingSettings.uiElements = [google.ima.UiElements.AD_ATTRIBUTION, google.ima.UiElements.COUNTDOWN];
+  adsRenderingSettings.uiElements = [google.ima.UiElements.AD_ATTRIBUTION, google.ima.UiElements.COUNTDOWN];
 
   // Get the ads manager.
   this.adsManager_ = adsManagerLoadedEvent.getAdsManager(
@@ -174,7 +175,6 @@ Player.prototype.onAdError_ = function(adErrorEvent) {
  * @private
  */
 Player.prototype.onContentPauseRequested_ = function() {
-  console.log(this);
   this.currentContentTime_ = this.mediaElement_.currentTime;
   this.broadcast_('onContentPauseRequested,' + this.currentContentTime_);
   this.adCountdown.style.visibility = "visible";
@@ -185,7 +185,7 @@ Player.prototype.onContentPauseRequested_ = function() {
       self.adCountdown.innerHTML =
         'Ad : (' + parseInt(remainingTime) + 's)';
     },
-    300);
+    200);
 };
 
 /**
