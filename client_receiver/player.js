@@ -18,9 +18,6 @@
 
 const NAMESPACE = 'urn:x-cast:com.google.ads.ima.cast';
 
-var adCountdown;
-var intervalTimer;
-
 /**
  * Creates new player for video and ad playback.
  *
@@ -29,8 +26,7 @@ let Player = function() {
   this.context_ = cast.framework.CastReceiverContext.getInstance();
   this.playerManager_ = this.context_.getPlayerManager();
   this.mediaElement_ = document.getElementById('player').getMediaElement();
-  adCountdown = document.getElementById('adCountdown');
-  this.wei = "hello";
+  this.adCountdown = document.getElementById('adCountdown');
 
   const options = new cast.framework.CastReceiverOptions();
   // Map of namespace names to their types.
@@ -181,11 +177,11 @@ Player.prototype.onContentPauseRequested_ = function() {
   console.log(this);
   this.currentContentTime_ = this.mediaElement_.currentTime;
   this.broadcast_('onContentPauseRequested,' + this.currentContentTime_);
-  adCountdown.style.visibility = "visible";
-  intervalTimer = setInterval(
+  this.adCountdown.style.visibility = "visible";
+  this.intervalTimer = setInterval(
     function() {
       var remainingTime = this.adsManager_.getRemainingTime();
-      adCountdown.innerHTML =
+      this.adCountdown.innerHTML =
         'Ad: (' + parseInt(remainingTime) + ')';
     },
     1000).bind(this);
@@ -200,8 +196,8 @@ Player.prototype.onContentResumeRequested_ = function() {
 
   this.playerManager_.load(this.request_);
   this.seek_(this.currentContentTime_);
-  adCountdown.style.visibility = "hidden";
-  clearInterval(intervalTimer);
+  this.adCountdown.style.visibility = "hidden";
+  clearInterval(this.intervalTimer);
 };
 
 /**
