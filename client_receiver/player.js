@@ -180,7 +180,7 @@ Player.prototype.onContentPauseRequested_ = function() {
   adCountdown.style.visibility = "visible";
   intervalTimer = setInterval(
     function() {
-      var remainingTime = adsManager.getRemainingTime();
+      var remainingTime = this.adsManager_.getRemainingTime();
       adCountdown.innerHTML =
         'Ad: (' + parseInt(remainingTime) + ')';
     },
