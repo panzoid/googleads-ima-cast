@@ -237,18 +237,6 @@ Player.prototype.requestAd_ = function(adTag, currentTime) {
  */
 Player.prototype.seek_ = function(time) {
   this.currentContentTime_ = time;
-
-  if (this.mediaElement_.currentTime > 0) {  
-    this.mediaElement_.currentTime = time;
-    this.mediaElement_.play();
-  } else {
-    this.mediaElement_.addEventListener('loadedmetadata', this.seekAfterLoadedListener_);
-    this.mediaElement_.load();
-  }
-};
-
-Player.prototype.seekAfterLoadedListener_ =  function() {
-  this.mediaElement_.removeEventListener('loadedmetadata', this.seekAfterLoadedListener_);
-  this.mediaElement_.currentTime = this.currentContentTime_;
-  this.mediaElement_.play();
+  this.playerManager_.seek(time);
+  this.playerManager_.play();
 }
