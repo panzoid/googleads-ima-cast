@@ -36,7 +36,6 @@ let Player = function() {
   this.context_.start(options);
 
   this.setupCallbacks_();
-  this.initIMA_();
 };
 
 /**
@@ -81,7 +80,7 @@ Player.prototype.setupCallbacks_ = function() {
       cast.framework.messages.MessageType.LOAD,
       (request) => {
         if (!this.request_) {
-          //self.initIMA_();
+          self.initIMA_();
         }
         this.request_ = request;
         this.playerManager_.pause();
@@ -127,7 +126,7 @@ Player.prototype.initIMA_ = function() {
 Player.prototype.onAdsManagerLoaded_ = function(adsManagerLoadedEvent) {
   let adsRenderingSettings = new google.ima.AdsRenderingSettings();
   adsRenderingSettings.playAdsAfterTime = this.currentContentTime_;
-  // Doesn't work. Thanks Google!
+  // Doesn't seem to work for Chromecast.
   //adsRenderingSettings.uiElements = [google.ima.UiElements.AD_ATTRIBUTION, google.ima.UiElements.COUNTDOWN];
 
   // Get the ads manager.
