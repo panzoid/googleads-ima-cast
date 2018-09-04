@@ -36,6 +36,7 @@ let Player = function() {
   this.context_.start(options);
 
   this.setupCallbacks_();
+  this.initIMA_();
 };
 
 /**
@@ -80,7 +81,7 @@ Player.prototype.setupCallbacks_ = function() {
       cast.framework.messages.MessageType.LOAD,
       (request) => {
         if (!this.request_) {
-          self.initIMA_();
+          //self.initIMA_();
         }
         this.request_ = request;
         this.playerManager_.pause();
@@ -126,6 +127,7 @@ Player.prototype.initIMA_ = function() {
 Player.prototype.onAdsManagerLoaded_ = function(adsManagerLoadedEvent) {
   let adsRenderingSettings = new google.ima.AdsRenderingSettings();
   adsRenderingSettings.playAdsAfterTime = this.currentContentTime_;
+  // Doesn't work. Thanks Google!
   //adsRenderingSettings.uiElements = [google.ima.UiElements.AD_ATTRIBUTION, google.ima.UiElements.COUNTDOWN];
 
   // Get the ads manager.
@@ -174,7 +176,6 @@ Player.prototype.onAdError_ = function(adErrorEvent) {
  * @private
  */
 Player.prototype.onContentPauseRequested_ = function() {
-  console.log(this);
   this.currentContentTime_ = this.mediaElement_.currentTime;
   this.broadcast_('onContentPauseRequested,' + this.currentContentTime_);
   this.adCountdown.style.visibility = "visible";
@@ -237,6 +238,18 @@ Player.prototype.requestAd_ = function(adTag, currentTime) {
  */
 Player.prototype.seek_ = function(time) {
   this.currentContentTime_ = time;
-  this.playerManager_.seek(time);
-  this.playerManager_.play();
+
+  if (this.mediaElement_.currentTime > 0) {  
+    this.mediaElement_.currentTime = time;
+    this.mediaElement_.play();
+  } else {
+    this.mediaElement_.addEventListener('loadedmetadata', this.seekAfterLoadedListener_);
+    this.mediaElement_.load();
+  }
 };
+
+Player.prototype.seekAfterLoadedListener_ =  function() {
+  this.mediaElement_.removeEventListener('loadedmetadata', this.seekAfterLoadedListener_);
+  this.mediaElement_.currentTime = this.currentContentTime_;
+  this.mediaElement_.play();
+}
