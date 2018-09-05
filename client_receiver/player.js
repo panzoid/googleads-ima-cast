@@ -185,7 +185,7 @@ Player.prototype.onContentPauseRequested_ = function() {
       self.adCountdown.innerHTML =
         'Ad : (' + parseInt(remainingTime) + 's)';
     },
-    200);
+    1000);
 };
 
 /**
