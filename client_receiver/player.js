@@ -24,6 +24,7 @@ const NAMESPACE = 'urn:x-cast:com.google.ads.ima.cast';
  */
 let Player = function() {
   this.context_ = cast.framework.CastReceiverContext.getInstance();
+  this.context_.setApplicationState("WEI");
   this.playerManager_ = this.context_.getPlayerManager();
   this.mediaElement_ = document.getElementById('player').getMediaElement();
   this.adCountdown = document.getElementById('adCountdown');
@@ -84,7 +85,7 @@ Player.prototype.setupCallbacks_ = function() {
         }
         this.request_ = request;
         this.playerManager_.pause();
-        return request;
+        return null;
       });
 };
 
@@ -127,7 +128,7 @@ Player.prototype.onAdsManagerLoaded_ = function(adsManagerLoadedEvent) {
   let adsRenderingSettings = new google.ima.AdsRenderingSettings();
   adsRenderingSettings.playAdsAfterTime = this.currentContentTime_;
   // Doesn't seem to work for Chromecast.
-  adsRenderingSettings.uiElements = [google.ima.UiElements.AD_ATTRIBUTION, google.ima.UiElements.COUNTDOWN];
+  //adsRenderingSettings.uiElements = [google.ima.UiElements.AD_ATTRIBUTION, google.ima.UiElements.COUNTDOWN];
 
   // Get the ads manager.
   this.adsManager_ = adsManagerLoadedEvent.getAdsManager(
