@@ -36,7 +36,6 @@ let Player = function() {
   this.context_.start(options);
 
   this.setupCallbacks_();
-  this.initIMA_();
 };
 
 /**
@@ -80,9 +79,9 @@ Player.prototype.setupCallbacks_ = function() {
   this.playerManager_.setMessageInterceptor(
       cast.framework.messages.MessageType.LOAD,
       (request) => {
-        //if (!this.request_) {
-          //self.initIMA_();
-        //}
+        if (!this.request_) {
+          self.initIMA_();
+        }
         this.request_ = request;
         this.playerManager_.pause();
         return request;
