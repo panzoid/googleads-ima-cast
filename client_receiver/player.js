@@ -176,7 +176,6 @@ Player.prototype.onAdError_ = function(adErrorEvent) {
  * @private
  */
 Player.prototype.onContentPauseRequested_ = function() {
-  this.document.getElementById("castMediaElement").style.display = "inline";
   this.currentContentTime_ = this.mediaElement_.currentTime;
   this.broadcast_('onContentPauseRequested,' + this.currentContentTime_);
   this.adCountdown.style.visibility = "visible";
